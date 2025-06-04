@@ -1,5 +1,10 @@
-
 var buttonColours = ["red", "blue", "green", "yellow"];
+var keyMap = {
+    'a': 'red',
+    's': 'blue',
+    'd': 'green',
+    'f': 'yellow'
+};
 
 var gamePattern = [];
 var userClickedPattern = [];
@@ -15,8 +20,20 @@ $(document).keypress(function () {
     }
 });
 
-$(".btn").click(function () {
+// Add keyboard event listener
+$(document).keydown(function(event) {
+    if (started && keyMap[event.key]) {
+        var userChosenColour = keyMap[event.key];
+        userClickedPattern.push(userChosenColour);
 
+        playSound(userChosenColour);
+        animatePress(userChosenColour);
+
+        checkAnswer(userClickedPattern.length - 1);
+    }
+});
+
+$(".btn").click(function () {
     var userChosenColour = $(this).attr("id");
     userClickedPattern.push(userChosenColour);
 
@@ -25,7 +42,6 @@ $(".btn").click(function () {
 
     checkAnswer(userClickedPattern.length - 1);
 });
-
 
 function checkAnswer(currentLevel) {
 
